@@ -1,0 +1,41 @@
+package com.imooc.flink.utils;
+
+import org.apache.kafka.server.authorizer.AuthorizerServerInfo;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class MySQLUtils {
+
+    public static Connection getConnection() {
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/pk_flink_imooc?useSSL=false", "root", "mysql1234");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static void close(Connection connection, PreparedStatement pstmt) {
+        if (null != pstmt) {
+            try {
+                pstmt.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
+        if (null != connection) {
+            try {
+                connection.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
+}

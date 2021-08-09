@@ -17,7 +17,7 @@ public class SourceApp {
         //创建上下文环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        test03(env);
+        test04(env);
 
         env.execute("SourceApp");
     }
@@ -34,20 +34,11 @@ public class SourceApp {
         System.out.println(stream.getParallelism());
         stream.print();
     }
-//    public static void test04(StreamExecutionEnvironment env ) {
-//        DataStreamSource<Student> source = env.addSource(new StudentSource()).setParallelism(3);
-//        System.out.println(source.getParallelism());
-//        source.print();
-//    }
-//
-//    public static void test03(StreamExecutionEnvironment env ) {
-//
-////        DataStreamSource<Access> source = env.addSource(new AccessSource())
-////                .setParallelism(2);
-//        DataStreamSource<Access> source = env.addSource(new AccessSourceV2()).setParallelism(3);
-//        System.out.println(source.getParallelism());
-//        source.print();
-//    }
+    public static void test04(StreamExecutionEnvironment env ) {
+        DataStreamSource<Student> source = env.addSource(new StudentSource());
+        System.out.println(source.getParallelism());
+        source.print();
+    }
 
     public static void test03(StreamExecutionEnvironment env) {
 //        DataStreamSource<Access> source = env.addSource(new AccessSource());
