@@ -18,8 +18,15 @@ public class TransformationApp {
         //创建上下文环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        keyBy(env);
+        richMap(env);
         env.execute("TransformationApp");
+    }
+
+    public static void richMap(StreamExecutionEnvironment env) {
+        DataStreamSource<String> source = env.readTextFile("data/access.log");
+
+        SingleOutputStreamOperator<Access> mapStream = source.map(new PKMapFunction());
+        mapStream.print();
     }
 
     public static void keyBy(StreamExecutionEnvironment env) {

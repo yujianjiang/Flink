@@ -1,5 +1,6 @@
 package com.imooc.flink.source;
 
+import com.imooc.flink.transfomation.Access;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -16,24 +17,23 @@ public class SourceApp {
         //创建上下文环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-//        test01(env);
-        test05(env);
+        test03(env);
 
         env.execute("SourceApp");
     }
 
-    public static void test05(StreamExecutionEnvironment env ) {
+    public static void test05(StreamExecutionEnvironment env) {
 
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "139.196.194.70:9092");
+        properties.setProperty("bootstrap.servers", "139.196.235.10:9092");
         properties.setProperty("group.id", "test");
+
         DataStream<String> stream = env
                 .addSource(new FlinkKafkaConsumer<>("pk1", new SimpleStringSchema(), properties));
 
         System.out.println(stream.getParallelism());
         stream.print();
     }
-
 //    public static void test04(StreamExecutionEnvironment env ) {
 //        DataStreamSource<Student> source = env.addSource(new StudentSource()).setParallelism(3);
 //        System.out.println(source.getParallelism());
@@ -49,7 +49,14 @@ public class SourceApp {
 //        source.print();
 //    }
 
-    public static void test02(StreamExecutionEnvironment env ){
+    public static void test03(StreamExecutionEnvironment env) {
+//        DataStreamSource<Access> source = env.addSource(new AccessSource());
+        DataStreamSource<Access> source = env.addSource(new AccessSourceV2()).setParallelism(9);
+        System.out.println(source.getParallelism());
+        source.print();
+    }
+
+    public static void test02(StreamExecutionEnvironment env) {
 
         env.setParallelism(5); // 对于env设置的并行度 是一个全局的概念
 
@@ -71,9 +78,7 @@ public class SourceApp {
 
     }
 
-
-
-    public static void test01(StreamExecutionEnvironment env ){
+    public static void test01(StreamExecutionEnvironment env) {
 
         env.setParallelism(5);
 
